@@ -1,36 +1,27 @@
 #!/usr/bin/python3
-from typing import List
+"""
+I have n number of locked boxes in front of me.
+Each box is numbered sequentially
+from 0 to n - 1 and each box may
+contain keys to the other boxes.
+"""
 
 
-def canUnlockAll(boxes: List[List[int]]) -> bool:
+def canUnlockAll(boxes):
     """
-    Determines if all the boxes can be opened.
+     A method to find out if all the boxes can be opened.
 
-    Args:
-        boxes (list): A list of lists representing the boxes and their keys.
-
-    Returns:
-        bool: True if all boxes can be opened, False otherwise.
+    :param boxes:
+    :return: True or False
     """
+    if not boxes or type(boxes) is not list:
+        return False
 
-    num_boxes = len(boxes)  # Total number of boxes
-    visited = set()  # Set to track visited boxes
-    visited.add(0)  # Mark the first box as visited
-
-    queue = [0]  # Initialize the queue with the first box
-
-    while queue:
-        current_box = queue.pop(0)
-
-        # Check the keys in the current box
-        for key in boxes[current_box]:
-            # If the key opens a box and it hasn't been visited before
-            if key < num_boxes and key not in visited:
-                visited.add(key)
-                queue.append(key)
-
-        # If we have visited all the boxes, return True
-        if len(visited) == num_boxes:
-            return True
-
+    unlocked = [0]
+    for n in unlocked:
+        for key in boxes[n]:
+            if key not in unlocked and key < len(boxes):
+                unlocked.append(key)
+    if len(unlocked) == len(boxes):
+        return True
     return False
