@@ -1,54 +1,73 @@
 #!/usr/bin/python3
+"""
+Module: Prime Game
+"""
+
+
+def findMultiples(num, targets):
+    """
+    Finds multiples of a given number within a list
+    """
+    for i in targets:
+        if i % num == 0:
+            targets.remove(i)
+    return targets
+
+
+def isPrime(i):
+    """
+    Check if a number is prime.
+    """
+    if i == 1:
+        return False
+    for j in range(2, i):
+        if i % j == 0:
+            return False
+    return True
+
+
+def findPrimes(n):
+    """
+    Dispatch a given set into prime numbers and non-prime numbers.
+    """
+    counter = 0
+    target = list(n)
+    for i in range(1, len(target) + 1):
+        if isPrime(i):
+            counter += 1
+            target.remove(i)
+            target = findMultiples(i, target)
+        else:
+            pass
+    return counter
+
 
 def isWinner(x, nums):
-    def is_prime(num):
-        if num < 2:
-            return False
-        for i in range(2, int(num**0.5) + 1):
-            if num % i == 0:
-                return False
-        return True
+    """
+    Prime Game: Maria and Ben are playing a game.Given a set of consecutive integers
+    starting from 1 up to and including n, they take turns choosing a
+    prime number from the set and removing that number and its
+    multiples from the set...
+    """
+    players = {'Maria': 0, 'Ben': 0}
+    cluster = set()
+    for elem in range(x):
+        nums.sort()
+        num = nums[elem]
+        for i in range(1, num + 1):
+            cluster.add(i)
+            if i == num + 1:
+                break
+        temp = findPrimes(cluster)
 
-    maria_wins = 0
-    ben_wins = 0
+        if temp % 2 == 0:
+            players['Ben'] += 1
+        elif temp % 2 != 0:
+            players['Maria'] += 1
 
-    for round in range(x):
-        n = nums[round]
-        num_list = list(range(1, n + 1))
-        turn = 0
-
-        while len(num_list) > 0:
-            if turn % 2 == 0:  # Maria's turn
-                for num in num_list:
-                    if is_prime(num):
-                        num_list = [x for x in num_list if x % num != 0]
-                        break
-                else:
-                    break
-            else:  # Ben's turn
-                for num in num_list:
-                    if is_prime(num):
-                        num_list = [x for x in num_list if x % num != 0]
-                        break
-                else:
-                    break
-
-            turn += 1
-
-        if turn % 2 == 0:
-            ben_wins += 1
-        else:
-            maria_wins += 1
-
-    if maria_wins > ben_wins:
+    if players['Maria'] > players['Ben']:
         return 'Maria'
-    elif maria_wins < ben_wins:
+    elif players['Maria'] < players['Ben']:
         return 'Ben'
     else:
         return None
-
-
-x = 3
-nums = [4, 5, 1]
-
-print(isWinner(x, nums))
